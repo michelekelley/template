@@ -86,13 +86,10 @@ for i in xrange(len(N)):
     xvals=np.arange(0, maxval)
     prob = poissonfunc(xvals, mean)
     plt.plot(xvals, prob, 'r', lw=3)
-    aaa= np.nanmax(prob)
-    sel = np.where(prob == max(prob))
-    n = xvals[sel]
-    probval = prob[sel]
+    maxloc = np.argmax(prob)
+    maxprob = prob[maxloc]
     label = "count for %s hr" % (nhr[i])
-    plt.text(n, probval, label)
-    
+    plt.text(maxloc, maxprob, label)
 # plot Gaussian distribution with matching mean and sigma
     sigma=np.sqrt(mean)
     y = gaussfunc(xvals, mean, sigma)

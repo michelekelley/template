@@ -17,7 +17,7 @@ Created: August 2016
 import numpy as np              # basic numerical analysis
 import matplotlib.pyplot as plt # plotting
 #import scipy as sp              # extended scientific function
-#import scipy.stats as stats     # statistical functions
+import scipy.stats as stats     # statistical functions
 #import numpy.random as npr      # random number generation
 #import astropy as ap            # core astronomy library
 #import astroML as ml            # machine learning for astronomy
@@ -67,8 +67,7 @@ def gaussfunc(xvals, mean, sigma):
 
 def poissonfunc(xvals, mean):
     prob=np.zeros(len(xvals))
-    for j in range(0, len(xvals)):
-        prob[j] = stats.poisson.pmf(xvals[j], mean)
+    prob[:] = stats.poisson.pmf(xvals[:], mean)
     return prob
 
 
@@ -80,16 +79,16 @@ nhr = N/U # time to count this many people
 
 for i in xrange(len(N)):
     
-    # plot probabilities of count values for range around mean
+# plot probabilities of count values for range around mean
     mean = N[i]
     maxval = 2*mean
     xvals=np.arange(0, maxval)
     prob = poissonfunc(xvals, mean)
     plt.plot(xvals, prob, 'r', lw=3)
+#find maximums to mark with labels    
     maxloc = np.argmax(prob)
-    maxprob = prob[maxloc]
     label = "count for %s hr" % (nhr[i])
-    plt.text(maxloc, maxprob, label)
+    plt.text(maxloc, prob[maxloc], label)
 # plot Gaussian distribution with matching mean and sigma
     sigma=np.sqrt(mean)
     y = gaussfunc(xvals, mean, sigma)

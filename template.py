@@ -17,14 +17,14 @@ Created: August 2016
 import numpy as np              # basic numerical analysis
 import matplotlib.pyplot as plt # plotting
 #import scipy as sp              # extended scientific function
-import scipy.stats as stats     # statistical functions
+#import scipy.stats as stats     # statistical functions
 #import numpy.random as npr      # random number generation
 #import astropy as ap            # core astronomy library
 #import astroML as ml            # machine learning for astronomy
 #import astroML.datasets as mld  # datasets
 #import pymc                     # bayesian package with MCMC
 import pdb                      # python debugger
-#import time                     # python timekeeper
+import time                     # python timekeeper
 #plt.ion()                       # use if working in ipython under linux
 
 # if any package above does not import properly, then you need to
@@ -56,7 +56,7 @@ Poisson distribution for increasing N and overplot Gaussians with the same mean
 N and 68% confidence interval +-sqrt(N), to see how quickly the Poisson shape
 approaches a Gaussian shape (i.e., when are we in the "large N" limit).
 """
-
+init_time = time.clock()
 #pdb.set_trace() 
    
 def gaussfunc(xvals, mean, sigma):
@@ -77,7 +77,8 @@ N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
 nhr = N/U # time to count this many people
 #labelarr = ["count for %s hr" % ihr for ihr in nhr]
 
-for i in xrange(0, len(N)):
+
+for i in xrange(len(N)):
     
     # plot probabilities of count values for range around mean
     mean = N[i]
@@ -85,9 +86,7 @@ for i in xrange(0, len(N)):
     xvals=np.arange(0, maxval)
     prob = poissonfunc(xvals, mean)
     plt.plot(xvals, prob, 'r', lw=3)
-    plt.xlabel("count value")
-    plt.ylabel("probability")
-    plt.xscale("log")
+    aaa= np.nanmax(prob)
     sel = np.where(prob == max(prob))
     n = xvals[sel]
     probval = prob[sel]
@@ -100,6 +99,14 @@ for i in xrange(0, len(N)):
     plt.plot(xvals, y, 'b')
 
 
+plt.xlabel("count value")
+plt.ylabel("probability")
+plt.xscale("log")
+
+
+
+time = time.clock()-init_time 
+print time
 """
 Task 1: Many times a code runs fine, but the output may be wrong; you 
 step through it line by line to make sure it's doing what you think it 

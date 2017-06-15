@@ -56,7 +56,9 @@ Poisson distribution for increasing N and overplot Gaussians with the same mean
 N and 68% confidence interval +-sqrt(N), to see how quickly the Poisson shape
 approaches a Gaussian shape (i.e., when are we in the "large N" limit).
 """
-    
+
+pdb.set_trace() 
+   
 def gaussfunc(xvals, mean, sigma):
     y = np.exp(-1.*(((xvals-mean)**2) / (2.* sigma**2)))
     norm = 1./np.sqrt(2. * sigma**2 * np.pi)

@@ -23,10 +23,10 @@ import scipy.stats as stats     # statistical functions
 #import astroML as ml            # machine learning for astronomy
 #import astroML.datasets as mld  # datasets
 #import pymc                     # bayesian package with MCMC
-#import pdb                      # python debugger
+import pdb                      # python debugger
 #import time                     # python timekeeper
 #plt.ion()                       # use if working in ipython under linux
-#import pdb                       #python debugger 
+
 # if any package above does not import properly, then you need to
 # revisit your anaconda installation
  
@@ -57,13 +57,20 @@ N and 68% confidence interval +-sqrt(N), to see how quickly the Poisson shape
 approaches a Gaussian shape (i.e., when are we in the "large N" limit).
 """
 
-pdb.set_trace() 
+#pdb.set_trace() 
    
 def gaussfunc(xvals, mean, sigma):
     y = np.exp(-1.*(((xvals-mean)**2) / (2.* sigma**2)))
     norm = 1./np.sqrt(2. * sigma**2 * np.pi)
     y = norm * y
     return y
+
+def poissonfunc(xvals, mean):
+    prob=np.zeros(len(xvals))
+    for j in range(0, len(xvals)):
+        prob[j] = stats.poisson.pmf(xvals[j], mean)
+    return prob
+
 
 U = 8. # underlying rate of gym users per hour
 N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
@@ -76,11 +83,6 @@ for i in xrange(0, len(N)):
     mean = N[i]
     maxval = 2*mean
     xvals=np.arange(0, maxval)
-    def poissonfunc(xvals, mean):
-        prob=np.zeros(len(xvals))
-        for j in range(0, len(xvals)):
-            prob[j] = stats.poisson.pmf(xvals[j], mean)
-        return prob
     prob = poissonfunc(xvals, mean)
     plt.plot(xvals, prob, 'r', lw=3)
     plt.xlabel("count value")
@@ -93,9 +95,9 @@ for i in xrange(0, len(N)):
     plt.text(n, probval, label)
     
 # plot Gaussian distribution with matching mean and sigma
-sigma=np.sqrt(mean)
-y = gaussfunc(xvals, mean, sigma)
-plt.plot(xvals, y, 'b')
+    sigma=np.sqrt(mean)
+    y = gaussfunc(xvals, mean, sigma)
+    plt.plot(xvals, y, 'b')
 
 
 """

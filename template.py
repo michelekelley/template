@@ -77,7 +77,12 @@ nhr = N/U # time to count this many people
 #labelarr = ["count for %s hr" % ihr for ihr in nhr]
 
 
-for i in xrange(len(N)):
+mean = N
+maxval = 2*mean
+xvals = np.arange(maxval)
+
+
+"""for i in xrange(len(N)):
     
 # plot probabilities of count values for range around mean
     mean = N[i]
@@ -92,9 +97,9 @@ for i in xrange(len(N)):
 # plot Gaussian distribution with matching mean and sigma
     sigma=np.sqrt(mean)
     y = gaussfunc(xvals, mean, sigma)
-    plt.plot(xvals, y, 'b')
+    plt.plot(xvals, y, 'b')"""
 
-
+#add labels to plot
 plt.xlabel("count value")
 plt.ylabel("probability")
 plt.xscale("log")

@@ -13,6 +13,7 @@ Author: Sheila Kannappan
 Created: August 2016
 """
 
+    
 # standard imports and naming conventions; uncomment as needed
 import numpy as np              # basic numerical analysis
 import matplotlib.pyplot as plt # plotting
@@ -26,7 +27,7 @@ import scipy.stats as stats     # statistical functions
 import pdb                      # python debugger
 import time                     # python timekeeper
 #plt.ion()                       # use if working in ipython under linux
-
+import timeit                    #more accurate timing
 # if any package above does not import properly, then you need to
 # revisit your anaconda installation
  
@@ -56,57 +57,60 @@ Poisson distribution for increasing N and overplot Gaussians with the same mean
 N and 68% confidence interval +-sqrt(N), to see how quickly the Poisson shape
 approaches a Gaussian shape (i.e., when are we in the "large N" limit).
 """
-init_time = time.clock()
-#pdb.set_trace() 
-   
-def gaussfunc(xvals, mean, sigma):
-    y = np.exp(-1.*(((xvals-mean)**2) / (2.* sigma**2)))
-    norm = 1./np.sqrt(2. * sigma**2 * np.pi)
-    y = norm * y
-    return y
 
-def poissonfunc(xvals, mean):
-    prob=np.zeros(len(xvals))
-    prob[:] = stats.poisson.pmf(xvals[:], mean)
-    return prob
+#pdb.set_trace() 
+def main():
+   
+    def gaussfunc(xvals, mean, sigma):
+        y = np.exp(-1.*(((xvals-mean)**2) / (2.* sigma**2)))
+        norm = 1./(sigma*np.sqrt(2.* np.pi))
+        y = norm * y
+        return y
+
+    def poissonfunc(xvals, mean):
+        prob=np.zeros(len(xvals))
+        prob[:] = stats.poisson.pmf(xvals[:], mean)
+        return prob
 
 #establish constants
-U = 8. # underlying rate of gym users per hour
-N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
-nhr = N/U # time to count this many people
+    U = 8. # underlying rate of gym users per hour
+    N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
+    nhr = N/U # time to count this many people
 
 
 #initial vectorization
-mean = N
-maxval = 2*mean
-length = len(N)
-xvals = [np.arange(maxval[x]) for x in xrange(length)]
+    mean = N
+    maxval = 2*mean
+    length = len(N)
+    xvals = [np.arange(maxval[x]) for x in xrange(length)]
 
 #plot probabilities using Poisson 
-probposs = ([poissonfunc(xvals[x], mean[x])])
-plotposs = [plt.plot(xvals[x],poissonfunc(xvals[x], mean[x]), 'r', lw=3) for x in xrange(length)]
+    [plt.plot(xvals[x],poissonfunc(xvals[x], mean[x]), 'r', lw=3) for x in xrange(length)]
 
 #plot Gaussian distribution with matching mean and sigma
-sigma = np.sqrt(mean)
-probgauss = ([gaussfunc(xvals[x], mean[x], sigma[x]) for x in xrange(length)])
-plotgauss = [plt.plot(xvals[x],gaussfunc(xvals[x], mean[x], sigma[x]),'b', lw=1) for x in xrange(length)]
+    sigma = np.sqrt(mean)
+    probgauss = ([gaussfunc(xvals[x], mean[x], sigma[x]) for x in xrange(length)])
+    [plt.plot(xvals[x],gaussfunc(xvals[x], mean[x], sigma[x]),'b', lw=1) for x in xrange(length)]
 
 #find maximums and mark with labels
-maxloc = ([np.argmax(probgauss[x]) for x in xrange(length)])
-labels = (["count for %s hr" %nhr[x] for x in xrange(length)])
-lab = [plt.text(maxloc[x], probgauss[x][maxloc[x]], labels[x]) for x in xrange(length)]    
+    maxloc = ([np.argmax(probgauss[x]) for x in xrange(length)])
+    labels = (["count for %s hr" %nhr[x] for x in xrange(length)])
+    [plt.text(maxloc[x], probgauss[x][maxloc[x]], labels[x]) for x in xrange(length)]    
 
    
 #add finishing touches to plot
-plt.xlabel("count value")
-plt.ylabel("probability")
-plt.xscale("log")
+    plt.xlabel("count value")
+    plt.ylabel("probability")
+    plt.xscale("log")
 
 
 
-time = time.clock()-init_time 
-print time 
+ 
+if __name__ == "__main__":
+    main()
+    
 
+timetaken = timeit.timeit()
 """
 
 Task 1: Many times a code runs fine, but the output may be wrong; you 

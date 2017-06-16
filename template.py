@@ -70,16 +70,31 @@ def poissonfunc(xvals, mean):
     prob[:] = stats.poisson.pmf(xvals[:], mean)
     return prob
 
-
+#establish constants
 U = 8. # underlying rate of gym users per hour
 N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
 nhr = N/U # time to count this many people
 #labelarr = ["count for %s hr" % ihr for ihr in nhr]
 
-
+#initial vectorization
 mean = N
 maxval = 2*mean
-xvals = np.arange(maxval)
+length= len(maxval)
+xvals = [np.arange(maxval[x]) for x in range(length)]
+
+#plot probabilities using Poisson 
+probposs = [poissonfunc(xvals[x], mean[x]) for x in range(length)]
+plotposs = [plt.plot(xvals[x],probposs[x], 'r', lw=3) for x in range(length)]
+
+#plot Gaussian distribution with matching mean and sigma
+sigma = np.sqrt(mean)
+probgauss = [gaussfunc(xvals[x], mean[x], sigma[x]) for x in range(length)]
+plotgauss = [plt.plot(xvals[x],probgauss[x], 'b', lw=1) for x in range(length)]
+
+#find maximums to mark with labels
+#maxloc = np.argmax(probposs)
+#label = "count for %s hr" % nhr
+labels = [(np.argmax(probposs[x]), probposs[np.argmax(probposs[x])]) for x in range(length)]
 
 
 """for i in xrange(len(N)):
@@ -97,7 +112,7 @@ xvals = np.arange(maxval)
 # plot Gaussian distribution with matching mean and sigma
     sigma=np.sqrt(mean)
     y = gaussfunc(xvals, mean, sigma)
-    plt.plot(xvals, y, 'b')"""
+    plt.plot(xvals, y, 'b')
 
 #add labels to plot
 plt.xlabel("count value")
@@ -107,8 +122,10 @@ plt.xscale("log")
 
 
 time = time.clock()-init_time 
-print time
+print time 
 """
+"""
+
 Task 1: Many times a code runs fine, but the output may be wrong; you 
 step through it line by line to make sure it's doing what you think it 
 should be doing. There are several errors in the program above. Try 
@@ -135,4 +152,5 @@ Task 4: Once you've got the code fixed up, you can play with the zoom in the
 plot window to see how closely the Poisson and Gaussian distributions match 
 each other for each value of N. If they match well, does that mean the 
 fractional error in the observed count must be small? Explain.
+
 """

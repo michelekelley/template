@@ -74,47 +74,30 @@ def poissonfunc(xvals, mean):
 U = 8. # underlying rate of gym users per hour
 N = np.array([6, 36, 216, 1296]) # total number of people counted (powers of 6)
 nhr = N/U # time to count this many people
-#labelarr = ["count for %s hr" % ihr for ihr in nhr]
+
 
 #initial vectorization
 mean = N
 maxval = 2*mean
-length= len(maxval)
-xvals = [np.arange(maxval[x]) for x in range(length)]
+length = len(N)
+xvals = [np.arange(maxval[x]) for x in xrange(length)]
 
 #plot probabilities using Poisson 
-probposs = [poissonfunc(xvals[x], mean[x]) for x in range(length)]
-plotposs = [plt.plot(xvals[x],probposs[x], 'r', lw=3) for x in range(length)]
+probposs = ([poissonfunc(xvals[x], mean[x])])
+plotposs = [plt.plot(xvals[x],poissonfunc(xvals[x], mean[x]), 'r', lw=3) for x in xrange(length)]
 
 #plot Gaussian distribution with matching mean and sigma
 sigma = np.sqrt(mean)
-probgauss = [gaussfunc(xvals[x], mean[x], sigma[x]) for x in range(length)]
-plotgauss = [plt.plot(xvals[x],probgauss[x], 'b', lw=1) for x in range(length)]
+probgauss = ([gaussfunc(xvals[x], mean[x], sigma[x]) for x in xrange(length)])
+plotgauss = [plt.plot(xvals[x],gaussfunc(xvals[x], mean[x], sigma[x]),'b', lw=1) for x in xrange(length)]
 
-#find maximums to mark with labels
-#maxloc = np.argmax(probposs)
-#label = "count for %s hr" % nhr
-labels = [(np.argmax(probposs[x]), probposs[np.argmax(probposs[x])]) for x in range(length)]
+#find maximums and mark with labels
+maxloc = ([np.argmax(probgauss[x]) for x in xrange(length)])
+labels = (["count for %s hr" %nhr[x] for x in xrange(length)])
+lab = [plt.text(maxloc[x], probgauss[x][maxloc[x]], labels[x]) for x in xrange(length)]    
 
-
-"""for i in xrange(len(N)):
-    
-# plot probabilities of count values for range around mean
-    mean = N[i]
-    maxval = 2*mean
-    xvals=np.arange(0, maxval)
-    prob = poissonfunc(xvals, mean)
-    plt.plot(xvals, prob, 'r', lw=3)
-#find maximums to mark with labels    
-    maxloc = np.argmax(prob)
-    label = "count for %s hr" % (nhr[i])
-    plt.text(maxloc, prob[maxloc], label)
-# plot Gaussian distribution with matching mean and sigma
-    sigma=np.sqrt(mean)
-    y = gaussfunc(xvals, mean, sigma)
-    plt.plot(xvals, y, 'b')
-
-#add labels to plot
+   
+#add finishing touches to plot
 plt.xlabel("count value")
 plt.ylabel("probability")
 plt.xscale("log")
@@ -123,7 +106,7 @@ plt.xscale("log")
 
 time = time.clock()-init_time 
 print time 
-"""
+
 """
 
 Task 1: Many times a code runs fine, but the output may be wrong; you 

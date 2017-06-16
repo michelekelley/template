@@ -103,14 +103,19 @@ def main():
     plt.ylabel("probability")
     plt.xscale("log")
     plt.show()
+    
+    
 
 
  
 if __name__ == "__main__":
     main()
     
-#time take to print will vary with the speed of the terminal -- check variable value instead
-timetaken = timeit.timeit()
+#time take to print will vary with the speed of the terminal 
+#to do several time trials use terminal (import timeit) $python -m timeit template
+#print timeit.timeit()
+
+
 """
 
 Task 1: Many times a code runs fine, but the output may be wrong; you 

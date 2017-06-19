@@ -27,7 +27,7 @@ import scipy.stats as stats     # statistical functions
 #import pdb                      # python debugger
 #import time                     # python timekeeper
 #plt.ion()                       # use if working in ipython under linux
-#import timeit                    #more accurate timing
+import timeit                    #more accurate timing
 # if any package above does not import properly, then you need to
 # revisit your anaconda installation
  
@@ -89,7 +89,6 @@ def main():
 
 #plot Gaussian distribution with matching mean and sigma
     sigma = np.sqrt(mean)
-    probgauss = ([gaussfunc(xvals[x], mean[x], sigma[x]) for x in xrange(length)])
     [plt.plot(xvals[x],gaussfunc(xvals[x], mean[x], sigma[x]),'b', lw=1) for x in xrange(length)]
 
 #find maximums and mark with labels
@@ -114,7 +113,7 @@ if __name__ == "__main__":
     
 #time take to print will vary with the speed of the terminal 
 #to do several time trials use terminal (import timeit) $python -m timeit template
-#print timeit.timeit()
+print timeit.timeit()
 
 
 """

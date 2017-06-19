@@ -24,10 +24,10 @@ import scipy.stats as stats     # statistical functions
 #import astroML as ml            # machine learning for astronomy
 #import astroML.datasets as mld  # datasets
 #import pymc                     # bayesian package with MCMC
-import pdb                      # python debugger
-import time                     # python timekeeper
+#import pdb                      # python debugger
+#import time                     # python timekeeper
 #plt.ion()                       # use if working in ipython under linux
-import timeit                    #more accurate timing
+#import timeit                    #more accurate timing
 # if any package above does not import properly, then you need to
 # revisit your anaconda installation
  
@@ -93,9 +93,10 @@ def main():
     [plt.plot(xvals[x],gaussfunc(xvals[x], mean[x], sigma[x]),'b', lw=1) for x in xrange(length)]
 
 #find maximums and mark with labels
-    maxloc = ([np.argmax(probgauss[x]) for x in xrange(length)])
+    probpoiss = ([poissonfunc(xvals[x], mean[x]) for x in xrange(length)])
+    maxloc = ([np.argmax(probpoiss[x]) for x in xrange(length)])
     labels = (["count for %s hr" %nhr[x] for x in xrange(length)])
-    [plt.text(maxloc[x], probgauss[x][maxloc[x]], labels[x]) for x in xrange(length)]    
+    [plt.text(maxloc[x], probpoiss[x][maxloc[x]], labels[x]) for x in xrange(length)]    
 
    
 #add finishing touches to plot
